@@ -1,10 +1,7 @@
-Get-WmiObject Win32_PnPEntity | Where-Object {$_.Name -like "*vmware*" -or $_.Name -like "*VBOX*"} | Select-Object Name
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity" /v Enabled /t REG_DWORD /d 0 /f
 
-# Verificar adaptador de red
-Get-NetAdapter | Select-Object Name, InterfaceDescription, MacAddress
+# Paso 2 - Deshabilitar VBS
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard" /v EnableVirtualizationBasedSecurity /t REG_DWORD /d 0 /f
 
-# Verificar discos
-Get-WmiObject Win32_DiskDrive | Select-Object Model, SerialNumber
-
-# Verificar tarjeta de video
-Get-WmiObject Win32_VideoController | Select-Object Name, AdapterRAM
+# Paso 3 - Deshabilitar driver blocklist
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\CI\Config" /v VulnerableDriverBlocklistEnable /t REG_DWORD /d 0 /f
